@@ -130,21 +130,21 @@ resource "aws_security_group" "techcorp_web_sg" {
   ingress {
     from_port       = 22
     to_port         = 22
-    protocol        = "tcp"
+    protocol        = "TCP"
     security_groups = [aws_security_group.techcorp_bastion_sg.id]
   }
 
   ingress {
     from_port       = 80
     to_port         = 80
-    protocol        = "tcp"
+    protocol        = "TCP"
     security_groups = [aws_security_group.techcorp_alb_sg.id]
   }
 
   egress  {
     from_port   = 0
     to_port     = 0
-    protocol    = "tcp"
+    protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -158,14 +158,14 @@ resource "aws_security_group" "techcorp_bastion_sg" {
   ingress {
     from_port   = 22
     to_port     = 22
-    protocol    = "tcp"
+    protocol    = "TCP"
     cidr_blocks = [var.my_cur_ip]
   }
 
   egress {
     from_port       = 22
     to_port         = 22
-    protocol        = "tcp"
+    protocol        = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -179,14 +179,14 @@ resource "aws_security_group" "techcorp_alb_sg" {
   ingress {
     from_port   = 80
     to_port     = 80
-    protocol    = "tcp"
+    protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
     from_port       = 80
     to_port         = 80
-    protocol        = "tcp"
+    protocol        = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -200,21 +200,21 @@ resource "aws_security_group" "techcorp_db_sg" {
   ingress {
     from_port       = 22
     to_port         = 22
-    protocol        = "tcp"
+    protocol        = "TCP"
     security_groups = [aws_security_group.techcorp_bastion_sg.id]
   }
 
   ingress {
     from_port       = 5432
     to_port         = 5432
-    protocol        = "tcp"
+    protocol        = "TCP"
     security_groups = [aws_security_group.techcorp_web_sg.id]
   }
 
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "tcp"
+    protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -297,7 +297,7 @@ resource "aws_lb" "techcorp_alb" {
 resource "aws_lb_target_group" "techcorp_alb_target_group" {
   name     = "techcorp-alb-target-group"
   port     = 80
-  protocol = "tcp"
+  protocol = "TCP"
   vpc_id   = aws_vpc.techcorp_vpc.id
 
   health_check {
