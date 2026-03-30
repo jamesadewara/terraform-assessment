@@ -318,7 +318,7 @@ resource "aws_lb_listener" "web_listener" {
 
   load_balancer_arn = aws_lb.techcorp_alb.arn
   port              = 80
-  protocol          = "tcp"
+  protocol          = "TCP"
 }
 
 # Connect the Private Web servers to ALB
