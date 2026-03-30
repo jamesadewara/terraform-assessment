@@ -286,50 +286,50 @@ resource "aws_instance" "techcorp_db_server" {
 
 # Create the Application Load Balancer and its resources
 resource "aws_lb" "techcorp_alb" {
-  name     = "techcorp-alb"
-  internal = false
+  name               = "techcorp-alb"
+  internal           = false
   load_balancer_type = "application"
-  security_groups = [aws_security_group.techcorp_alb_sg.id]
-  subnets = [aws_subnet.techcorp_public_subnet_1.id, aws_subnet.techcorp_public_subnet_2.id]
+  security_groups    = [aws_security_group.techcorp_alb_sg.id]
+  subnets            = [aws_subnet.techcorp_public_subnet_1.id, aws_subnet.techcorp_public_subnet_2.id]
 }
 
 # Target group
-resource "aws_lb_target_group" "techcorp_alb_target_group"{
-    name = "techcorp-alb-target-group"
-    port = 80
-    protocol = "tcp"
-    vpc_id = aws_vpc.techcorp_vpc.id
+resource "aws_lb_target_group" "techcorp_alb_target_group" {
+  name     = "techcorp-alb-target-group"
+  port     = 80
+  protocol = "tcp"
+  vpc_id   = aws_vpc.techcorp_vpc.id
 
-    health_check {
-      path = "/"
-      interval = 30
-      timeout = 5
-      healthy_threshold = 2
-      unhealthy_threshold = 2
-    }
+  health_check {
+    path                = "/"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+  }
 }
 
 # Listeners
 resource "aws_lb_listener" "web_listener" {
-    default_action {
-      type = "forward"
-      target_group_arn = aws_lb_target_group.techcorp_alb_target_group.arn
-    }
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.techcorp_alb_target_group.arn
+  }
 
-    load_balancer_arn = aws_lb.techcorp_alb.arn
-    port = 80
-    protocol = "tcp"
+  load_balancer_arn = aws_lb.techcorp_alb.arn
+  port              = 80
+  protocol          = "tcp"
 }
 
 # Connect the Private Web servers to ALB
-resource "aws_lb_target_group_attachment" "techcorp_web_server_1_attachment"{
-    target_id = aws_instance.techcorp_web_server_1.id
-    target_group_arn = aws_lb_target_group.techcorp_alb_target_group.arn
-    port = 80
+resource "aws_lb_target_group_attachment" "techcorp_web_server_1_attachment" {
+  target_id        = aws_instance.techcorp_web_server_1.id
+  target_group_arn = aws_lb_target_group.techcorp_alb_target_group.arn
+  port             = 80
 }
 
-resource "aws_lb_target_group_attachment" "techcorp_web_server_2_attachment"{
-    target_id = aws_instance.techcorp_web_server_2.id
-    target_group_arn = aws_lb_target_group.techcorp_alb_target_group.arn
-    port = 80
+resource "aws_lb_target_group_attachment" "techcorp_web_server_2_attachment" {
+  target_id        = aws_instance.techcorp_web_server_2.id
+  target_group_arn = aws_lb_target_group.techcorp_alb_target_group.arn
+  port             = 80
 }
