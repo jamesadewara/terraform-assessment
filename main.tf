@@ -23,14 +23,14 @@ resource "aws_subnet" "techcorp_public_subnet_1" {
   vpc_id            = aws_vpc.techcorp_vpc.id
   cidr_block        = "10.0.1.0/24"
   availability_zone = local.aws_availability_zone_1
-  tags              = { Name = "techcorp_public_subnet_1" }
+  tags              = { Name = "techcorp-public-subnet-1" }
 }
 
 resource "aws_subnet" "techcorp_public_subnet_2" {
   vpc_id            = aws_vpc.techcorp_vpc.id
   cidr_block        = "10.0.2.0/24"
   availability_zone = local.aws_availability_zone_2
-  tags              = { Name = "techcorp_public_subnet_2" }
+  tags              = { Name = "techcorp-public-subnet-2" }
 }
 
 # Create the Private subnets
@@ -38,27 +38,27 @@ resource "aws_subnet" "techcorp_private_subnet_1" {
   vpc_id            = aws_vpc.techcorp_vpc.id
   cidr_block        = "10.0.3.0/24"
   availability_zone = local.aws_availability_zone_1
-  tags              = { Name = "techcorp_private_subnet_1" }
+  tags              = { Name = "techcorp-private-subnet-1" }
 }
 
 resource "aws_subnet" "techcorp_private_subnet_2" {
   vpc_id            = aws_vpc.techcorp_vpc.id
   cidr_block        = "10.0.4.0/24"
   availability_zone = local.aws_availability_zone_2
-  tags              = { Name = "techcorp_private_subnet_2" }
+  tags              = { Name = "techcorp-private-subnet-2" }
 }
 
 # Create the IGW (Internet Gateway for the public subnets)
 resource "aws_internet_gateway" "techcorp_igw" {
   vpc_id = aws_vpc.techcorp_vpc.id
-  tags   = { Name = "techcorp_igw" }
+  tags   = { Name = "techcorp-igw" }
 }
 
 
 # Create the NAT Gateway and its resources e.g. Elastip IP for the private subnets
 resource "aws_eip" "techcorp_nat_eip" {
   domain = "vpc"
-  tags   = { Name = "techcorp_nat_eip" }
+  tags   = { Name = "techcorp-nat-eip" }
 }
 
 resource "aws_nat_gateway" "techcorp_nat_gateway" {
@@ -66,7 +66,7 @@ resource "aws_nat_gateway" "techcorp_nat_gateway" {
   subnet_id     = aws_subnet.techcorp_public_subnet_1.id
 
   tags = {
-    Name = "techcorp_nat_gateway"
+    Name = "techcorp-nat-gateway"
   }
 
   depends_on = [aws_internet_gateway.techcorp_igw]
@@ -83,7 +83,7 @@ resource "aws_route_table" "techcorp_public_route_table" {
     gateway_id = aws_internet_gateway.techcorp_igw.id
   }
 
-  tags = { Name = "techcorp_public_route_table" }
+  tags = { Name = "techcorp-public-route-table" }
 }
 
 resource "aws_route_table_association" "techcorp_public_route_table_association_subnet_1" {
@@ -106,7 +106,7 @@ resource "aws_route_table" "techcorp_private_route_table" {
     gateway_id = aws_nat_gateway.techcorp_nat_gateway.id
   }
 
-  tags = { Name = "techcorp_private_route_table" }
+  tags = { Name = "techcorp-private-route-table" }
 }
 
 resource "aws_route_table_association" "techcorp_private_route_table_association_subnet_1" {
@@ -123,7 +123,7 @@ resource "aws_route_table_association" "techcorp_private_route_table_association
 
 # Web Security Group
 resource "aws_security_group" "techcorp_web_sg" {
-  name        = "techcorp_web_sg"
+  name        = "techcorp-web-sg"
   description = "Security group for web servers"
   vpc_id      = aws_vpc.techcorp_vpc.id
 
@@ -151,7 +151,7 @@ resource "aws_security_group" "techcorp_web_sg" {
 
 # Bastion Security Group
 resource "aws_security_group" "techcorp_bastion_sg" {
-  name        = "techcorp_bastion_sg"
+  name        = "techcorp-bastion-sg"
   description = "Security group for bastion servers"
   vpc_id      = aws_vpc.techcorp_vpc.id
 
@@ -172,7 +172,7 @@ resource "aws_security_group" "techcorp_bastion_sg" {
 
 # Application Load Balancer Security Group
 resource "aws_security_group" "techcorp_alb_sg" {
-  name        = "techcorp_alb_sg"
+  name        = "techcorp-alb-sg"
   description = "Security group for ALB"
   vpc_id      = aws_vpc.techcorp_vpc.id
 
@@ -193,7 +193,7 @@ resource "aws_security_group" "techcorp_alb_sg" {
 
 # Database Security Group
 resource "aws_security_group" "techcorp_db_sg" {
-  name        = "techcorp_db_sg"
+  name        = "techcorp-db-sg"
   description = "Security group for postgersql db"
   vpc_id      = aws_vpc.techcorp_vpc.id
 
@@ -230,7 +230,7 @@ resource "aws_instance" "techcorp_bastion" {
   associate_public_ip_address = true
 
   tags = {
-    Name = "techcorp_bastion"
+    Name = "techcorp-bastion"
   }
 }
 
