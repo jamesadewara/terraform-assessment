@@ -141,7 +141,7 @@ resource "aws_security_group" "techcorp_web_sg" {
     security_groups = [aws_security_group.techcorp_alb_sg.id]
   }
 
-  egress  {
+  egress {
     from_port   = 0
     to_port     = 0
     protocol    = "TCP"
@@ -163,9 +163,9 @@ resource "aws_security_group" "techcorp_bastion_sg" {
   }
 
   egress {
-    from_port       = 22
-    to_port         = 22
-    protocol        = "TCP"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -184,9 +184,9 @@ resource "aws_security_group" "techcorp_alb_sg" {
   }
 
   egress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "TCP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "TCP"
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
