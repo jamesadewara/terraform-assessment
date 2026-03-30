@@ -1,12 +1,11 @@
 locals {
-  aws_region              = "us-east-1"
   aws_availability_zone_1 = "us-east-1a"
   aws_availability_zone_2 = "us-east-1b"
 }
 
 # init the cloud provider (aws)
 provider "aws" {
-  region = local.aws_region
+  region = var.aws_region
 }
 
 # Create vpc
@@ -225,7 +224,7 @@ resource "aws_security_group" "techcorp_db_sg" {
 # Bastion Instance
 resource "aws_instance" "techcorp_bastion" {
   ami                         = "ami-0c55b159cbfafe1f0"
-  instance_type               = "t3.micro"
+  instance_type               = var.aws_instance_type
   subnet_id                   = aws_subnet.techcorp_public_subnet_1.id
   vpc_security_group_ids      = [aws_security_group.techcorp_bastion_sg.id]
   associate_public_ip_address = true
@@ -237,15 +236,15 @@ resource "aws_instance" "techcorp_bastion" {
 
 # Create the Web Server Key pair
 resource "aws_key_pair" "techcorp_web_key_pair" {
-  key_name   = "techcorp_web_key_pair"
-  public_key = file("${path.module}/keys/techcorp_web_key_pair.pub") # relative path
+  key_name   = var.aws_key_pair_name
+  public_key = file("${path.module}/keys/techcorp-key.pub") # relative path
 }
 
 
 # Web Server Instance 1
 resource "aws_instance" "techcorp_web_server_1" {
   ami                    = "ami-0c55b159cbfafe1f0"
-  instance_type          = "t3.micro"
+  instance_type          = var.aws_instance_type
   subnet_id              = aws_subnet.techcorp_private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.techcorp_web_sg.id]
   key_name               = aws_key_pair.techcorp_web_key_pair.key_name
@@ -260,7 +259,7 @@ resource "aws_instance" "techcorp_web_server_1" {
 # Web Server Instance 2
 resource "aws_instance" "techcorp_web_server_2" {
   ami                    = "ami-0c55b159cbfafe1f0"
-  instance_type          = "t3.micro"
+  instance_type          = var.aws_instance_type
   subnet_id              = aws_subnet.techcorp_private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.techcorp_web_sg.id]
   key_name               = aws_key_pair.techcorp_web_key_pair.key_name
@@ -274,7 +273,7 @@ resource "aws_instance" "techcorp_web_server_2" {
 # Database Server Instance 2
 resource "aws_instance" "techcorp_db_server" {
   ami                    = "ami-0c55b159cbfafe1f0"
-  instance_type          = "t3.small"
+  instance_type          = var.aws_db_instance_type
   subnet_id              = aws_subnet.techcorp_private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.techcorp_db_sg.id]
 
@@ -285,7 +284,52 @@ resource "aws_instance" "techcorp_db_server" {
   }
 }
 
+# Create the Application Load Balancer and its resources
 resource "aws_lb" "techcorp_alb" {
   name     = "techcorp-alb"
   internal = false
+  load_balancer_type = "application"
+  security_groups = [aws_security_group.techcorp_alb_sg.id]
+  subnets = [aws_subnet.techcorp_public_subnet_1.id, aws_subnet.techcorp_public_subnet_2.id]
+}
+
+# Target group
+resource "aws_lb_target_group" "techcorp_alb_target_group"{
+    name = "techcorp-alb-target-group"
+    port = 80
+    protocol = "tcp"
+    vpc_id = aws_vpc.techcorp_vpc.id
+
+    health_check {
+      path = "/"
+      interval = 30
+      timeout = 5
+      healthy_threshold = 2
+      unhealthy_threshold = 2
+    }
+}
+
+# Listeners
+resource "aws_lb_listener" "web_listener" {
+    default_action {
+      type = "forward"
+      target_group_arn = aws_lb_target_group.techcorp_alb_target_group.arn
+    }
+
+    load_balancer_arn = aws_lb.techcorp_alb.arn
+    port = 80
+    protocol = "tcp"
+}
+
+# Connect the Private Web servers to ALB
+resource "aws_lb_target_group_attachment" "techcorp_web_server_1_attachment"{
+    target_id = aws_instance.techcorp_web_server_1.id
+    target_group_arn = aws_lb_target_group.techcorp_alb_target_group.arn
+    port = 80
+}
+
+resource "aws_lb_target_group_attachment" "techcorp_web_server_2_attachment"{
+    target_id = aws_instance.techcorp_web_server_2.id
+    target_group_arn = aws_lb_target_group.techcorp_alb_target_group.arn
+    port = 80
 }

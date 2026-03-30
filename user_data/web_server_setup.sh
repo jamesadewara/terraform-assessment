@@ -11,7 +11,36 @@ sudo systemctl start httpd
 # Enable Apache to start automatically on every reboot
 sudo systemctl enable httpd
 
-# 5. Create a simple HTML page (Requirement 5)
-# This grabs the unique Instance ID from AWS metadata to show it works
+
+# Fetch Metadata from the AWS internal service (IMDS)
+# We get the unique ID and the internal network IP
 INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-echo "<h1>Hello from TechCorp Web Server</h1><p>Instance ID: $INSTANCE_ID</p>" > /var/www/html/index.index.html
+PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+
+# 5. Create the HTML page for the assessment
+# This uses a "Here Document" (cat <<EOF) to make the code clean and readable
+cat <<EOF > /var/www/html/index.html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TechCorp Web Server</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; background-color: #f4f4f9; color: #333; }
+        .container { border: 2px solid #0073bb; background-color: white; padding: 40px; display: inline-block; border-radius: 15px; margin-top: 100px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #0073bb; }
+        .info { font-size: 1.2em; margin: 10px 0; }
+        .footer { margin-top: 20px; font-size: 0.8em; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Hello James Ayomide Adewara</h1>
+        <h3>TechCorp Web Application Deployment</h3>
+        <hr>
+        <div class="info"><strong>Instance ID:</strong> $INSTANCE_ID</div>
+        <div class="info"><strong>Private IP:</strong> $PRIVATE_IP</div>
+        <div class="footer">Infrastructure Provisioned via Terraform</div>
+    </div>
+</body>
+</html>
+EOF
