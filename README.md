@@ -18,8 +18,8 @@ This repository contains a Terraform configuration for a highly available, three
 
 ### 2. Clone the Repository
 ```bash
-git clone https://github.com/jamesadewara/terraform-assessment.git
-cd terraform-assessment
+git clone https://github.com/jamesadewara/month-one-assessments.git
+cd month-one-assessments
 ```
 
 ### 3. Generate SSH Keys
@@ -29,11 +29,10 @@ ssh-keygen -t rsa -b 4096 -f ./keys/techcorp-key
 ```
 
 ### 4. Configuration
-Create a `terraform.tfvars` file based on the example provided and fill in your specific values (e.g., your IP address for SSH access).
+export to terminal
 ```bash
-export .env to terminal
-#e.g. 
-# export = AWS_ACCESS_KEY_ID="your_access_key_id"
+# AWS_ACCESS_KEY_ID="your_access_key_id"
+# AWS_SECRET_ACCESS_KEY="your_secret_access_key"
 ```
 
 ## 🛠 Deployment Steps
