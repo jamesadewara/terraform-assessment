@@ -75,17 +75,17 @@ This setup uses **SSH Agent Forwarding** to ensure your private key never leaves
 3. **Jump to Private Servers:**
    From the Bastion terminal, you can access the internal servers using their private IPs:
    ```bash
-   ssh ec2-user@<WEB-SERVER-1-PRIVATE-IP>
+   ssh ec2-user@<WEB-SERVER-PRIVATE-IP>
    ssh ec2-user@<DB-SERVER-PRIVATE-IP>
    ```
 
 4. **Connect to the Postgres Instance on the DB Server**
 ```bash
-psql -U postgres
+sudo -u postgres psql
 ```
 
 ## 🧹 Cleanup
 To avoid ongoing AWS costs, destroy the infrastructure once the assessment is complete:
 ```bash
-terraform destroy -auto-approve
+terraform destroy
 ```
