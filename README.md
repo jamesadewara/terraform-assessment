@@ -31,7 +31,9 @@ ssh-keygen -t rsa -b 4096 -f ./techcorp-key
 ### 4. Configuration
 Create a `terraform.tfvars` file based on the example provided and fill in your specific values (e.g., your IP address for SSH access).
 ```bash
-export terraform.tfvars.example to terminal
+export .env to terminal
+#e.g. 
+# export = AWS_ACCESS_KEY_ID="your_access_key_id"
 ```
 
 ## 🛠 Deployment Steps
@@ -49,8 +51,9 @@ export terraform.tfvars.example to terminal
 
 3. **Plan & Apply:**
    ```bash
-   terraform plan
-   terraform apply -auto-approve
+   echo "$(curl -s ifconfig.me)/32" # for current ip
+   terraform plan -out # which saves it for the apply
+   terraform apply
    ```
 
 ## 🔐 Accessing the Infrastructure
@@ -77,6 +80,11 @@ This setup uses **SSH Agent Forwarding** to ensure your private key never leaves
    ssh ec2-user@<WEB-SERVER-1-PRIVATE-IP>
    ssh ec2-user@<DB-SERVER-PRIVATE-IP>
    ```
+
+4. **Connect to the Postgres Instance on the DB Server**
+```bash
+psql -U postgres
+```
 
 ## 🧹 Cleanup
 To avoid ongoing AWS costs, destroy the infrastructure once the assessment is complete:

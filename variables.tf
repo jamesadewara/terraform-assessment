@@ -27,3 +27,9 @@ variable "aws_key_pair_name" {
   description = "the key pair used for the ec2 instnaces"
   default     = "techcorp-web-key-pair"
 }
+
+variable "aws_ami_id" {
+  type        = string
+  description = "The AMI ID to use for the EC2 instances"
+  default     = "ami-0440d3b780d96b29d"
+}
