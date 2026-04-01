@@ -22,3 +22,8 @@ output "web_server_2_private_ip" {
   value       = aws_instance.techcorp_web_server_2.private_ip
   description = "The private IP for the 2nd web server"
 }
+
+output "db_server_private_ip" {
+  value       = aws_instance.techcorp_db_server.private_ip
+  description = "The private IP for the database server"
+}

@@ -62,7 +62,6 @@ This setup uses **SSH Agent Forwarding** to ensure your private key never leaves
 
 1. **Add your key to the SSH agent:**
    ```bash
-   chmod 700 ./keys
    chmod 600 ./keys/techcorp-key
    chmod 644 ./keys/techcorp-key.pub
    eval `ssh-agent -s`
