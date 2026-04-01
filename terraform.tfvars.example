@@ -1,3 +1,5 @@
-export AWS_ACCESS_KEY_ID="your_access_key_id"
-export AWS_SECRET_ACCESS_KEY="your_secret_access_key"
-
+my_cur_ip="my_cur_ip"
+aws_region="aws_regione.g. us-east"
+aws_instance_type=""
+aws_db_instance_type=""
+aws_key_pair_name=""

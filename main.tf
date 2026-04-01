@@ -223,7 +223,7 @@ resource "aws_security_group" "techcorp_db_sg" {
 
 # Bastion Instance
 resource "aws_instance" "techcorp_bastion" {
-  ami                         = "ami-0c55b159cbfafe1f0"
+  ami                         = var.aws_ami_id
   instance_type               = var.aws_instance_type
   subnet_id                   = aws_subnet.techcorp_public_subnet_1.id
   vpc_security_group_ids      = [aws_security_group.techcorp_bastion_sg.id]
@@ -243,7 +243,7 @@ resource "aws_key_pair" "techcorp_web_key_pair" {
 
 # Web Server Instance 1
 resource "aws_instance" "techcorp_web_server_1" {
-  ami                    = "ami-0c55b159cbfafe1f0"
+  ami                    = var.aws_ami_id
   instance_type          = var.aws_instance_type
   subnet_id              = aws_subnet.techcorp_private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.techcorp_web_sg.id]
@@ -258,7 +258,7 @@ resource "aws_instance" "techcorp_web_server_1" {
 
 # Web Server Instance 2
 resource "aws_instance" "techcorp_web_server_2" {
-  ami                    = "ami-0c55b159cbfafe1f0"
+  ami                    = var.aws_ami_id
   instance_type          = var.aws_instance_type
   subnet_id              = aws_subnet.techcorp_private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.techcorp_web_sg.id]
@@ -272,7 +272,7 @@ resource "aws_instance" "techcorp_web_server_2" {
 
 # Database Server Instance 2
 resource "aws_instance" "techcorp_db_server" {
-  ami                    = "ami-0c55b159cbfafe1f0"
+  ami                    = var.aws_ami_id
   instance_type          = var.aws_db_instance_type
   subnet_id              = aws_subnet.techcorp_private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.techcorp_db_sg.id]
