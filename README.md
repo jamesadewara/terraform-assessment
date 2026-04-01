@@ -19,7 +19,7 @@ This repository contains a Terraform configuration for a highly available, three
 ### 2. Clone the Repository
 ```bash
 git clone https://github.com/jamesadewara/month-one-assessments.git
-cd month-one-assessments
+cd month-one-assessments # i renamed my github repo from terraform-assessment to month-one-assessments
 ```
 
 ### 3. Generate SSH Keys
