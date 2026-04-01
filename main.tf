@@ -297,7 +297,7 @@ resource "aws_lb" "techcorp_alb" {
 resource "aws_lb_target_group" "techcorp_alb_target_group" {
   name     = "techcorp-alb-target-group"
   port     = 80
-  protocol = "TCP"
+  protocol = "HTTP"
   vpc_id   = aws_vpc.techcorp_vpc.id
 
   health_check {
