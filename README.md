@@ -51,8 +51,8 @@ export .env to terminal
 
 3. **Plan & Apply:**
    ```bash
-   echo "$(curl -s ifconfig.me)/32" # for current ip
-   terraform plan -out # which saves it for the apply
+   echo "$(curl -s ifconfig.me)/32" # for current ip 
+   terraform plan
    terraform apply
    ```
 

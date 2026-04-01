@@ -14,8 +14,10 @@ sudo systemctl enable httpd
 
 # Fetch Metadata from the AWS internal service (IMDS)
 # We get the unique ID and the internal network IP
-INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+# Fetch Metadata using IMDSv2 (Token-based)
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+INSTANCE_ID=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.254/latest/meta-data/instance-id)
+PRIVATE_IP=$(curl -H "X-aws-ec2-metadata-token: $TOKEN" -s http://169.254.169.254/latest/meta-data/local-ipv4)
 
 # 5. Create the HTML page for the assessment
 # This uses a "Here Document" (cat <<EOF) to make the code clean and readable
