@@ -25,7 +25,7 @@ cd terraform-assessment
 ### 3. Generate SSH Keys
 Generate a unique key pair to access the instances securely.
 ```bash
-ssh-keygen -t rsa -b 4096 -f ./techcorp-key
+ssh-keygen -t rsa -b 4096 -f ./keys/techcorp-key
 ```
 
 ### 4. Configuration
