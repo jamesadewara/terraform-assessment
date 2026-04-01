@@ -228,7 +228,7 @@ resource "aws_instance" "techcorp_bastion" {
   subnet_id                   = aws_subnet.techcorp_public_subnet_1.id
   vpc_security_group_ids      = [aws_security_group.techcorp_bastion_sg.id]
   associate_public_ip_address = true
-  key_name = aws_key_pair.techcorp_web_key_pair.key_name
+  key_name                    = aws_key_pair.techcorp_web_key_pair.key_name
 
   tags = {
     Name = "techcorp-bastion"
@@ -277,7 +277,7 @@ resource "aws_instance" "techcorp_db_server" {
   instance_type          = var.aws_db_instance_type
   subnet_id              = aws_subnet.techcorp_private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.techcorp_db_sg.id]
-  key_name = aws_key_pair.techcorp_web_key_pair.key_name
+  key_name               = aws_key_pair.techcorp_web_key_pair.key_name
 
   user_data = file("${path.module}/user_data/db_server_setup.sh") # relative path 
 
