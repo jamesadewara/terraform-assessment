@@ -214,7 +214,7 @@ resource "aws_security_group" "techcorp_db_sg" {
   egress {
     from_port   = 0
     to_port     = 0
-    protocol    = "TCP"
+    protocol    = -1 # allows all protocols for outbound rule
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
@@ -260,7 +260,7 @@ resource "aws_instance" "techcorp_web_server_1" {
 resource "aws_instance" "techcorp_web_server_2" {
   ami                    = var.aws_ami_id
   instance_type          = var.aws_instance_type
-  subnet_id              = aws_subnet.techcorp_private_subnet_1.id
+  subnet_id              = aws_subnet.techcorp_private_subnet_2.id
   vpc_security_group_ids = [aws_security_group.techcorp_web_sg.id]
   key_name               = aws_key_pair.techcorp_web_key_pair.key_name
   user_data              = file("${path.module}/user_data/web_server_setup.sh") # relative path 
@@ -277,7 +277,7 @@ resource "aws_instance" "techcorp_db_server" {
   subnet_id              = aws_subnet.techcorp_private_subnet_1.id
   vpc_security_group_ids = [aws_security_group.techcorp_db_sg.id]
 
-  user_data = file("${path.module}/user_data/web_server_setup.sh") # relative path 
+  user_data = file("${path.module}/user_data/db_server_setup.sh") # relative path 
 
   tags = {
     Name = "techcorp-db-server"
