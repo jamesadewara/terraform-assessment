@@ -141,6 +141,13 @@ resource "aws_security_group" "techcorp_web_sg" {
     security_groups = [aws_security_group.techcorp_alb_sg.id]
   }
 
+  ingress {
+    from_port       = 443
+    to_port         = 443
+    protocol        = "TCP"
+    security_groups = [aws_security_group.techcorp_alb_sg.id]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
