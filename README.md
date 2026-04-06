@@ -25,6 +25,7 @@ cd month-one-assessments # i renamed my github repo from terraform-assessment to
 ### 3. Generate SSH Keys
 Generate a unique key pair to access the instances securely.
 ```bash
+mkdir ./keys/
 ssh-keygen -t rsa -b 4096 -f ./keys/techcorp-key
 ```
 
