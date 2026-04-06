@@ -25,14 +25,15 @@ cd month-one-assessments # i renamed my github repo from terraform-assessment to
 ### 3. Generate SSH Keys
 Generate a unique key pair to access the instances securely.
 ```bash
+mkdir ./keys/
 ssh-keygen -t rsa -b 4096 -f ./keys/techcorp-key
 ```
 
 ### 4. Configuration
 export to terminal
 ```bash
-# AWS_ACCESS_KEY_ID="your_access_key_id"
-# AWS_SECRET_ACCESS_KEY="your_secret_access_key"
+# export AWS_ACCESS_KEY_ID="your_access_key_id"
+# export AWS_SECRET_ACCESS_KEY="your_secret_access_key"
 ```
 
 ## 🛠 Deployment Steps
